@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="402dp"
+        android:layout_height="370dp"
+        android:layout_marginBottom="52dp"
+        app:layout_constraintBottom_toTopOf="@+id/destinationName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.659"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/destinationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Destination Name"
+        app:layout_constraintBottom_toTopOf="@+id/note"
+        app:layout_constraintTop_toBottomOf="@+id/mapView"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="397dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/note"
+        android:layout_width="455dp"
+        android:layout_height="45dp"
+        android:hint="Note"
+        app:layout_constraintBottom_toTopOf="@+id/destinationCity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/destinationName"
+        app:layout_constraintVertical_bias="0.52" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/destinationCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="City"
+        app:layout_constraintBottom_toTopOf="@+id/destinationCountry"
+        app:layout_constraintTop_toTopOf="@+id/note"
+        app:layout_constraintVertical_bias="0.97"
+        tools:layout_editor_absoluteX="29dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/destinationCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Country"
+        app:layout_constraintBottom_toTopOf="@+id/addWishFinalBtn"
+        app:layout_constraintTop_toTopOf="@+id/destinationCity"
+        app:layout_constraintVertical_bias="0.973"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/addWishFinalBtn"
+        android:layout_width="194dp"
+        android:layout_height="43dp"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/destinationCountry"
+        app:layout_constraintVertical_bias="0.96" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
