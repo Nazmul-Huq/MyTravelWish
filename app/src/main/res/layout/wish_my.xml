@@ -7,6 +7,7 @@
     >
 
 
+
     <Button
         android:id="@+id/addWishBtn"
         android:layout_width="194dp"
@@ -18,6 +19,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.96" />
+
+    <ListView
+        android:id="@+id/wishList"
+        android:layout_width="388dp"
+        android:layout_height="609dp"
+        app:layout_constraintBottom_toTopOf="@+id/addWishBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

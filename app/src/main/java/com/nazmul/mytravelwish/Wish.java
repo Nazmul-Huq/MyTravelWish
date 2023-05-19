@@ -1,30 +1,41 @@
 package com.nazmul.mytravelwish;
 
 public class Wish {
-    private String place;
-    private String country;
+    private String destination;
+    private String note;
+
+    private String city;
 
     public Wish() {
     }
 
-    public Wish(String place, String country) {
-        this.place = place;
-        this.country = country;
+    public Wish(String destination, String note, String city) {
+        this.destination = destination;
+        this.note = note;
+        this.city = city;
     }
 
-    public String getPlace() {
-        return place;
+    public String getCity() {
+        return city;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getCountry() {
-        return country;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }
