@@ -44,6 +44,9 @@ public class FirebaseService {
         ref.set(wish);
     }
 
+    /**
+     * this method is moved to MyWish.java
+     */
     public void getWishes(){
         db.collection("wishes")
                 .get()

@@ -59,6 +59,9 @@ public class MyWish extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * get all the wishes from firebase and re-lode the adapter
+     */
     public void getAllWishes(){
         firebaseService.db.collection("wishes")
                 .get()
