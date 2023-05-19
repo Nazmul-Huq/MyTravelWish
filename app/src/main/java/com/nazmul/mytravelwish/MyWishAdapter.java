@@ -47,7 +47,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         }
         Wish wish = data.get(position);
         holder.destinationName.setText(wish.getDestination());
-        holder.city.setText(wish.getCity());
+        holder.note.setText(wish.getNote());
         holder.city.setText(wish.getCity());
         return row;
     }

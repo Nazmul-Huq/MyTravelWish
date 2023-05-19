@@ -43,7 +43,7 @@ public class AddWish extends AppCompatActivity {
                 if (destinationCityStr.matches("")) destinationCityStr = "x";
                 if (destinationCountryStr.matches("")) destinationCountryStr = "x";
 
-                //firebaseService.addWish(destinationNameStr, noteStr, destinationCityStr, destinationCountryStr);
+                firebaseService.addWish(destinationNameStr, noteStr, destinationCityStr, destinationCountryStr);
                 viewMyActivity();
             }
         });
