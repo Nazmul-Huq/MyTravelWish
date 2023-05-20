@@ -1,17 +1,24 @@
 package com.nazmul.mytravelwish;
 
+
+
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.maps.MapView;
 
 import java.util.ArrayList;
 
@@ -41,6 +48,12 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
             holder.destinationName = (TextView) row.findViewById(R.id.destinationNameRow);
             holder.note = (TextView) row.findViewById(R.id.noteRow);
             holder.city = (TextView) row.findViewById(R.id.destinationCityRow);
+            holder.editButton = (Button) row.findViewById(R.id.editButton);
+            holder.deleteButton = (Button) row.findViewById(R.id.deleteButton);
+            holder.hiddenText = (TextView) row.findViewById(R.id.hiddenText);
+            holder.imageView = (ImageView) row.findViewById(R.id.imageView);
+            holder.mapView = (MapView) row.findViewById(R.id.mapView);
+            holder.hiddenText = (TextView) row.findViewById(R.id.hiddenText);
             row.setTag(holder);
         } else {
             holder = (UserHolder) row.getTag();
@@ -49,6 +62,43 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.destinationName.setText(wish.getDestination());
         holder.note.setText(wish.getNote());
         holder.city.setText(wish.getCity());
+        holder.hiddenText.setText(wish.getId());
+        holder.imageView.setImageResource(R.drawable.default_wish_image);
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get the id of the wish, that was clicked
+                //String wishId = getWishIdWhenClicked(view);
+
+                // TODO: edit a wish
+            }
+        });
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO delete a wish
+            }
+        });
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get the id of the wish, that was clicked
+                String wishId = getWishIdWhenClicked(view);
+                Intent intent=new Intent(view.getContext(), ImageHandler.class);
+                intent.putExtra("wishId", wishId);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        holder.mapView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO view map
+            }
+        });
+
         return row;
     }
 
@@ -56,5 +106,18 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         TextView destinationName;
         TextView note;
         TextView city;
+        ImageView imageView;
+        MapView mapView;
+        Button editButton;
+        Button deleteButton;
+        TextView hiddenText;
     }
+
+    public String getWishIdWhenClicked(View view){
+        RelativeLayout relativeLayout = (RelativeLayout) view.getParent();
+        TextView child = (TextView)relativeLayout.getChildAt(8);
+        String wishId = child.getText().toString();
+        return wishId;
+    }
+
 }

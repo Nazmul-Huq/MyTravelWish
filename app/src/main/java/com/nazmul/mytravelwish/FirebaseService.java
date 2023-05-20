@@ -1,9 +1,7 @@
 package com.nazmul.mytravelwish;
 
-import static android.content.ContentValues.TAG;
 
 import android.util.Log;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
@@ -13,11 +11,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class FirebaseService {
 
@@ -26,6 +25,12 @@ public class FirebaseService {
 
     // create an instance of firestore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    StorageReference storageRef;
+    public FirebaseService(){
+        storageRef = FirebaseStorage.getInstance().getReference();
+    }
+
+
 
     /**
      * Add document to the firestore database
@@ -70,6 +75,19 @@ public class FirebaseService {
 
                     }
                 });
+    }
+
+    public void saveImage(byte[] img, String id){
+        Log.i("firebase123", "save image called");
+        String pathString = id + ".jpg";
+        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(pathString);
+        UploadTask task = imgRef.putBytes(img);  // putStream(s) for larger files
+        task.addOnSuccessListener(taskSnapshot -> {
+            Log.i("firebase123", "OK uploading " + taskSnapshot.getBytesTransferred());
+        });
+        task.addOnFailureListener(exception->{
+            Log.i("firebase123", "error uploading " + exception);
+        });
     }
 
 }

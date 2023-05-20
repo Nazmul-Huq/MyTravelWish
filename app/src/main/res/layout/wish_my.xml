@@ -22,8 +22,8 @@
 
     <ListView
         android:id="@+id/wishList"
-        android:layout_width="388dp"
-        android:layout_height="609dp"
+        android:layout_width="350dp"
+        android:layout_height="579dp"
         app:layout_constraintBottom_toTopOf="@+id/addWishBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
