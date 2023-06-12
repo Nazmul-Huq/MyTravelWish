@@ -18,7 +18,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 
@@ -64,6 +66,8 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.city.setText(wish.getCity());
         holder.hiddenText.setText(wish.getId());
         holder.imageView.setImageResource(R.drawable.default_wish_image);
+
+        // add edit button click event
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +78,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
             }
         });
 
+        // add delete button click event
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,17 +86,18 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
             }
         });
 
+        // add image click event
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // get the id of the wish, that was clicked
-                String wishId = getWishIdWhenClicked(view);
-                Intent intent=new Intent(view.getContext(), ImageHandler.class);
-                intent.putExtra("wishId", wishId);
-                view.getContext().startActivity(intent);
+                String wishId = getWishIdWhenClicked(view); // get the id of the wish, that was clicked
+                Intent intent=new Intent(view.getContext(), ImageHandler.class); // set intent
+                intent.putExtra("wishId", wishId); // set image id into intent
+                view.getContext().startActivity(intent); // start the page (ImageHandler)
             }
         });
 
+        // add map click event
         holder.mapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -31,11 +31,12 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/note"
-        android:layout_width="455dp"
-        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Note"
         app:layout_constraintBottom_toTopOf="@+id/destinationCity"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/destinationName"
         app:layout_constraintVertical_bias="0.52" />

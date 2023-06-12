@@ -25,6 +25,7 @@ public class ImageHandler extends AppCompatActivity {
     String wishId;
     ImageView imageView;
     private FirebaseService firebaseService;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
