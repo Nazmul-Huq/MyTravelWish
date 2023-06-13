@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class ShowTheMap extends AppCompatActivity implements OnMapReadyCallback 
 
     private MapView mapView;
     private GoogleMap map;
+    private Button addEditMapButton;
     String wishId;
     FirebaseService firebaseService;
 
@@ -40,6 +42,7 @@ public class ShowTheMap extends AppCompatActivity implements OnMapReadyCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_the_map);
         mapView = findViewById(R.id.fullMapView);
+        addEditMapButton = findViewById(R.id.addEditMapButton);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -51,15 +54,13 @@ public class ShowTheMap extends AppCompatActivity implements OnMapReadyCallback 
     }
 
 
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
         map = googleMap;
 
         DocumentReference docRef = firebaseService.db.collection("locations").document(wishId);
-        // GoqcfATljXOcpoxE6Qkx dhaka 23.810331 90.412521
-        // diwF6Gf8iHQPNI13DiDH COPENHAGEN 55.676098 12.568337
-        // fIxllKMNjinWwCMhPeJp aarhus
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -71,7 +72,20 @@ public class ShowTheMap extends AppCompatActivity implements OnMapReadyCallback 
                         LatLng location = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                         map.addMarker(new MarkerOptions().position(location).title("Marker"));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
+                        addEditMapButton.setText("Edit Location");
                     } else {
+                        map.setOnMapLongClickListener(latLng -> {
+                            googleMap.addMarker(new MarkerOptions().position(latLng).title("Come here!"));
+                        });
+                        addEditMapButton.setText("Add Location");
+                        addEditMapButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(view.getContext(), SetEditMap.class); // set intent
+                                intent.putExtra("wishId", wishId); // set image id into intent
+                                view.getContext().startActivity(intent); // start the page (ImageHandler)
+                            }
+                        });
                         Log.d(TAG, "No such document");
                     }
                 } else {
@@ -99,32 +113,6 @@ public class ShowTheMap extends AppCompatActivity implements OnMapReadyCallback 
         mapView.onDestroy();
     }
 
-   public void getLatLongitude(String id){
 
-       //DocumentReference docRef = firebaseService.db.collection("locations").document("FO4FGoVAQ8oaqrcNwx2a");
-       /*DocumentReference docRef = firebaseService.db.collection("locations").document("AZ8oLBXyk92KZxIAlrrV");
-
-       docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-           @Override
-           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-               if (task.isSuccessful()) {
-                   DocumentSnapshot document = task.getResult();
-                   if (document.exists()) {
-                       GeoPoint geoPoint = document.getGeoPoint("location");
-                       locations.add(geoPoint.getLatitude());
-                       locations.add(geoPoint.getLongitude());
-                       //double latitude = geoPoint.getLatitude();
-                       //double longitude = geoPoint.getLongitude();
-                       //locationHolder.setLatitudeData(latitude);
-                       //locationHolder.setLongitudeData(longitude);
-                   } else {
-                       Log.d(TAG, "No such document");
-                   }
-               } else {
-                   Log.d(TAG, "get failed with ", task.getException());
-               }
-           }
-       });*/
-   }
 
 } // class ends here

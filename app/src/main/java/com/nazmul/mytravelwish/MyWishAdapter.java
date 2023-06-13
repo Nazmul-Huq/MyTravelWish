@@ -19,13 +19,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
 
 public class MyWishAdapter extends ArrayAdapter<Wish> {
@@ -59,7 +52,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
             holder.deleteButton = (Button) row.findViewById(R.id.deleteButton);
             holder.hiddenText = (TextView) row.findViewById(R.id.hiddenText);
             holder.imageView = (ImageView) row.findViewById(R.id.imageView);
-            holder.mapView = (MapView) row.findViewById(R.id.mapView);
+            holder.defaultMapIcon = (ImageView) row.findViewById(R.id.defaultMapIcon);
             holder.hiddenText = (TextView) row.findViewById(R.id.hiddenText);
             row.setTag(holder);
         } else {
@@ -71,6 +64,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.city.setText(wish.getCity());
         holder.hiddenText.setText(wish.getId());
         holder.imageView.setImageResource(R.drawable.default_wish_image);
+        holder.defaultMapIcon.setImageResource(R.drawable.default_map_image);
 
         // add edit button click event
         holder.editButton.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +97,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         });
 
         // add map click event
-        holder.mapView.setOnClickListener(new View.OnClickListener() {
+        holder.defaultMapIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String wishId = getWishIdWhenClicked(view); // get the id of the wish, that was clicked
@@ -121,7 +115,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         TextView note;
         TextView city;
         ImageView imageView;
-        MapView mapView;
+        ImageView defaultMapIcon;
         Button editButton;
         Button deleteButton;
         TextView hiddenText;

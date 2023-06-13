@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,6 +48,17 @@ public class FirebaseService {
         wish.put("destinationCity", destinationCityStr);
         wish.put("destinationCountry", destinationCountryStr);
         ref.set(wish);
+    }
+
+    public void addLocation(GeoPoint geoPoint){
+        DocumentReference ref = db.collection("locations").document();
+
+  /*      Map<String, Object> wish = new HashMap<>();
+        wish.put("destinationName", destinationNameStr);
+        wish.put("note", noteStr);
+        wish.put("destinationCity", destinationCityStr);
+        wish.put("destinationCountry", destinationCountryStr);*/
+        ref.set(geoPoint);
     }
 
     /**
