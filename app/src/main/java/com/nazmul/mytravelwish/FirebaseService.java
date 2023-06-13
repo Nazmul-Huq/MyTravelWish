@@ -1,12 +1,16 @@
 package com.nazmul.mytravelwish;
 
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -25,6 +29,7 @@ public class FirebaseService {
     //https://firebase.google.com/docs/firestore/quickstart?authuser=0
 
     // create an instance of firestore
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageRef;
     public FirebaseService(){
@@ -48,17 +53,6 @@ public class FirebaseService {
         wish.put("destinationCity", destinationCityStr);
         wish.put("destinationCountry", destinationCountryStr);
         ref.set(wish);
-    }
-
-    public void addLocation(GeoPoint geoPoint){
-        DocumentReference ref = db.collection("locations").document();
-
-  /*      Map<String, Object> wish = new HashMap<>();
-        wish.put("destinationName", destinationNameStr);
-        wish.put("note", noteStr);
-        wish.put("destinationCity", destinationCityStr);
-        wish.put("destinationCountry", destinationCountryStr);*/
-        ref.set(geoPoint);
     }
 
     /**
@@ -100,6 +94,62 @@ public class FirebaseService {
         task.addOnFailureListener(exception->{
             Log.i("firebase123", "error uploading " + exception);
         });
+    }
+
+
+    /**
+     * add location to the firesotre
+     * doc id will be the same as correspondent wish id
+     * @param latitude
+     * @param longitude
+     * @param wishId
+     */
+    public void saveLocationToFirestor(double latitude, double longitude, String wishId) {
+        Map<String, Object> data = new HashMap<>();
+        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+        data.put("location", geoPoint);
+
+        CollectionReference collectionRef = db.collection("locations");
+        DocumentReference docRef = collectionRef.document(wishId);
+        docRef.set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("locationadded", "success");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("locationadded", "failed");
+                    }
+                });
+    }
+
+    /**
+     * update the location
+     * @param latitude
+     * @param longitude
+     * @param wishId
+     */
+    public void updateLocationToFirestor(double latitude, double longitude, String wishId) {
+        Map<String, Object> data = new HashMap<>();
+        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+        data.put("location", geoPoint);
+
+        DocumentReference documentRef = db.collection("locations").document(wishId);
+        documentRef.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle error
+                    }
+                });
     }
 
 }

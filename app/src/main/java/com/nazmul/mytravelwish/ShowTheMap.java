@@ -73,6 +73,15 @@ public class ShowTheMap extends AppCompatActivity implements OnMapReadyCallback 
                         map.addMarker(new MarkerOptions().position(location).title("Marker"));
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
                         addEditMapButton.setText("Edit Location");
+                        addEditMapButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(view.getContext(), SetEditMap.class); // set intent
+                                intent.putExtra("wishId", wishId); // set image id into intent
+                                intent.putExtra("editMap", "true");
+                                view.getContext().startActivity(intent); // start the page (ImageHandler)
+                            }
+                        });
                     } else {
                         map.setOnMapLongClickListener(latLng -> {
                             googleMap.addMarker(new MarkerOptions().position(latLng).title("Come here!"));
@@ -83,6 +92,7 @@ public class ShowTheMap extends AppCompatActivity implements OnMapReadyCallback 
                             public void onClick(View view) {
                                 Intent intent=new Intent(view.getContext(), SetEditMap.class); // set intent
                                 intent.putExtra("wishId", wishId); // set image id into intent
+                                intent.putExtra("editMap", "false");
                                 view.getContext().startActivity(intent); // start the page (ImageHandler)
                             }
                         });

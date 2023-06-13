@@ -40,9 +40,10 @@ public class SetEditMap extends AppCompatActivity implements OnMapReadyCallback,
     private Button saveLocationButton;
     private TextView locationText;
     private String wishId;
+    private String editMap;
     FirebaseService firebaseService;
-
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,30 +58,9 @@ public class SetEditMap extends AppCompatActivity implements OnMapReadyCallback,
 
         Intent intent = getIntent();
         wishId = intent.getStringExtra("wishId");
-
-/*        getLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doSomethingWithCoordinates();
-                //getLocationFromMap();
-            }
-        });*/
+        editMap = intent.getStringExtra("editMap");
 
     }
-
-
-
-/*    private void getLocationFromMap() {
-        if (googleMap != null) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                googleMap.getMyLocation();
-            } else {
-                // Request location permissions if not granted
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            }
-        }
-    }*/
 
     @Override
     public void onMapReady(GoogleMap map) {
@@ -108,19 +88,28 @@ public class SetEditMap extends AppCompatActivity implements OnMapReadyCallback,
         // Handle the touch event
         double latitude = latLng.latitude;
         double longitude = latLng.longitude;
-        String detailLocation = getLocation(latitude, longitude);
-        locationText.setText(detailLocation);
-        saveLocationButton.setOnClickListener(new View.OnClickListener() {
+        String detailLocation = getLocation(latitude, longitude); // get detail location
+        locationText.setText(detailLocation); // set detail location in the txt field for review
+        saveLocationButton.setOnClickListener(new View.OnClickListener() { // on save button click
             @Override
             public void onClick(View v) {
-                saveLocationToFirestor(latitude, longitude);
+                if (editMap.equals("true")) { // is editing? call below
+                    firebaseService.updateLocationToFirestor(latitude, longitude, wishId);
+                    goToHomePage();
+                } else { // if first time setup call below
+                    firebaseService.saveLocationToFirestor(latitude, longitude, wishId);
+                    goToHomePage();
+                }
+
             }
         });
     }
 
+    /**
+     * Enable the My Location layer if permission is granted
+     */
     private void enableMyLocation() {
         try {
-            // Enable the My Location layer if permission is granted
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         } catch (SecurityException e) {
@@ -167,32 +156,12 @@ public class SetEditMap extends AppCompatActivity implements OnMapReadyCallback,
         mapView.onLowMemory();
     }
 
-
-
-    // save location data to firestore
-    private void saveLocationToFirestor(double latitude, double longitude) {
-        Map<String, Object> data = new HashMap<>();
-        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
-        data.put("location", geoPoint);
-
-        CollectionReference collectionRef = firebaseService.db.collection("locations");
-        DocumentReference docRef = collectionRef.document(wishId);
-        docRef.set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("locationadded", "success");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("locationadded", "failed");
-                    }
-                });
-    }
-
-
+    /**
+     * get location detail from latitude and altitude
+     * @param lat
+     * @param lng
+     * @return location detail
+     */
     public String getLocation(double lat, double lng) {
         Geocoder geocoder = new Geocoder(SetEditMap.this, Locale.getDefault());
         String add = "";
@@ -211,6 +180,15 @@ public class SetEditMap extends AppCompatActivity implements OnMapReadyCallback,
         }
 
         return add;
+    }
+
+    /**
+     * after successful submission send back to home page
+     */
+    private void goToHomePage(){
+        Intent intent=new Intent(this, MyWish.class); // set intent
+        startActivity(intent); // start the page (ImageHandler)
+        finish(); // finishing the current activity
     }
 
 
