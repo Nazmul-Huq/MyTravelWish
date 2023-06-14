@@ -1,5 +1,8 @@
 package com.nazmul.mytravelwish;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 public class Wish {
     private String id;
     private String destination;

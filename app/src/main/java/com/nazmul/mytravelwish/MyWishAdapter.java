@@ -6,6 +6,9 @@ package com.nazmul.mytravelwish;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -64,7 +70,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.city.setText(wish.getCity());
         holder.country.setText(wish.getCountry());
         holder.hiddenText.setText(wish.getId());
-        holder.imageView.setImageResource(R.drawable.default_wish_image);
+        downloadAndShowImage(wish.getId(), holder);
         holder.defaultMapIcon.setImageResource(R.drawable.default_map_image);
 
         // add edit button click event
@@ -137,4 +143,21 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         return info;
     }
 
+    /**
+     * download image from firbase storage and show it in the individual wish
+     * @param wishId
+     * @param holder
+     */
+    private void downloadAndShowImage(String wishId, UserHolder holder){
+        String pathString = wishId+".jpg";
+        StorageReference imgRef =  FirebaseStorage.getInstance().getReference().child(pathString);
+        imgRef.getBytes(10000000)
+                .addOnSuccessListener(bytes -> {
+                    Bitmap bm = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                    holder.imageView.setImageBitmap(bm);
+                })
+                .addOnFailureListener(e -> {
+                    holder.imageView.setImageResource(R.drawable.default_wish_image);
+                });
+    }
 }
