@@ -45,4 +45,14 @@
         app:layout_constraintTop_toBottomOf="@+id/selectPhoto"
         app:layout_constraintVertical_bias="0.162"
         app:srcCompat="@drawable/ic_launcher_background" />
+
+    <Button
+        android:id="@+id/saveImageButton"
+        android:layout_width="137dp"
+        android:layout_height="59dp"
+        android:text="Save Image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/uploadImageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

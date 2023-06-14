@@ -21,7 +21,8 @@ import java.io.ByteArrayOutputStream;
 public class ImageHandler extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> launchGalleryForResult;
-    Button takePhoto, selectPhoto;
+    private ActivityResultLauncher<Intent> launchCameraForResult;
+    Button takePhoto, selectPhoto, saveImageButton;
     String wishId;
     ImageView imageView;
     private FirebaseService firebaseService;
@@ -35,6 +36,7 @@ public class ImageHandler extends AppCompatActivity {
         takePhoto = (Button)findViewById(R.id.takePhoto);
         selectPhoto = (Button)findViewById(R.id.selectPhoto);
         imageView = (ImageView)findViewById(R.id.uploadImageView);
+        saveImageButton = (Button)findViewById(R.id.saveImageButton);
 
         selectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +45,15 @@ public class ImageHandler extends AppCompatActivity {
             }
         });
 
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraBtnPressed(view);
+            }
+        });
+
         createGalleryLauncher();
+        createCameraLauncher();
 
         Intent intent = getIntent();
         wishId = intent.getStringExtra("wishId");
@@ -57,7 +67,28 @@ public class ImageHandler extends AppCompatActivity {
                         Intent intent = result.getData();
                         imageView.setImageURI(intent.getData());
                         Bitmap bm = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-                        firebaseService.saveImage(getBytes(bm), wishId);
+                        saveImageButton.setOnClickListener(view -> {
+                            firebaseService.saveImage(getBytes(bm), wishId);
+                            goToHomePage();
+                        });
+                    }
+                }
+        );
+    }
+
+    private void createCameraLauncher() {
+        launchCameraForResult = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent intent = result.getData();
+                        // capture image data...
+                        Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+                        imageView.setImageBitmap(bitmap);
+                        saveImageButton.setOnClickListener(view -> {
+                            firebaseService.saveImage(getBytes(bitmap), wishId);
+                            goToHomePage();
+                        });
                     }
                 }
         );
@@ -70,10 +101,25 @@ public class ImageHandler extends AppCompatActivity {
         launchGalleryForResult.launch(intent);
     }
 
+    public void cameraBtnPressed(View view){
+        Log.i("imageupload", "clicked camera");
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        launchCameraForResult.launch(intent);
+    }
+
     private byte[] getBytes(Bitmap bitmap){
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100,bs);
         return bs.toByteArray();
+    }
+
+    /**
+     * after successful submission send back to home page
+     */
+    private void goToHomePage(){
+        Intent intent=new Intent(this, MyWish.class); // set intent
+        startActivity(intent); // start the page (ImageHandler)
+        finish(); // finishing the current activity
     }
 
 }
