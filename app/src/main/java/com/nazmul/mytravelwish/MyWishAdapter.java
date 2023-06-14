@@ -72,7 +72,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
             @Override
             public void onClick(View view) {
                 String wishId = getInfoOnClick(view, 8); // get the id of the wish, that was clicked
-                Intent intent=new Intent(view.getContext(), AddWish.class); // set intent
+                Intent intent=new Intent(view.getContext(), AddEditWish.class); // set intent
                 intent.putExtra("wishId", getInfoOnClick(view, 8)); // set image id into intent
                 intent.putExtra("destinationName", getInfoOnClick(view, 0)); // set image id into intent
                 intent.putExtra("note", getInfoOnClick(view, 1)); // set image id into intent

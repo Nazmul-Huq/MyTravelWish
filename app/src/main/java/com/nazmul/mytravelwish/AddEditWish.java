@@ -10,9 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * This page show all the wishes of a specific user
+ * This allow to edit an existing wish or add a new wish
  */
-public class AddWish extends AppCompatActivity {
+public class AddEditWish extends AppCompatActivity {
 
     private String isEditWish, wishIdString, destinationNameString, cityString, noteString, countryString;
     EditText destinationName, note, destinationCity, destinationCountry;

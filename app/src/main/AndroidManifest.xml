@@ -23,7 +23,7 @@
             />
 
         <activity android:name=".MyWish"></activity>
-        <activity android:name=".AddWish"></activity>
+        <activity android:name=".AddEditWish"></activity>
         <activity android:name=".ImageHandler"></activity>
         <activity android:name=".ShowTheMap"></activity>
         <activity android:name=".SetEditMap"></activity>
