@@ -2,7 +2,6 @@ package com.nazmul.mytravelwish;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class AddWish extends AppCompatActivity {
 
+    private String isEditWish, wishIdString, destinationNameString, cityString, noteString, countryString;
     EditText destinationName, note, destinationCity, destinationCountry;
     Button addWishFinalBtn;
     FirebaseService firebaseService;
@@ -30,6 +30,23 @@ public class AddWish extends AppCompatActivity {
         destinationCountry = (EditText) findViewById(R.id.destinationCountry);
         addWishFinalBtn = (Button) findViewById(R.id.addWishFinalBtn);
 
+        Intent intent = getIntent();
+        isEditWish = intent.getStringExtra("editWish");
+
+        wishIdString = intent.getStringExtra("wishId");
+        destinationNameString = intent.getStringExtra("destinationName");
+        cityString = intent.getStringExtra("city");
+        noteString = intent.getStringExtra("note");
+        countryString = intent.getStringExtra("country");
+
+        if (isEditWish.equals("true")){
+            destinationName.setText(destinationNameString);
+            destinationCity.setText(cityString);
+            note.setText(noteString);
+            destinationCountry.setText(countryString);
+            addWishFinalBtn.setText("Edit Wish");
+        }
+
 
         addWishFinalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,14 +60,22 @@ public class AddWish extends AppCompatActivity {
                 if (destinationCityStr.matches("")) destinationCityStr = "x";
                 if (destinationCountryStr.matches("")) destinationCountryStr = "x";
 
-                firebaseService.addWish(destinationNameStr, noteStr, destinationCityStr, destinationCountryStr);
-                viewMyActivity();
+                if (isEditWish.equals("true")) {
+                    // edit an existing wish
+                    firebaseService.editWish(wishIdString, destinationNameStr, noteStr, destinationCityStr, destinationCountryStr);
+                } else {
+                    // add a new wish
+                    firebaseService.addWish(destinationNameStr, noteStr, destinationCityStr, destinationCountryStr);
+                }
+
+                goToHomepage();
             }
         });
 
 
     }
-    private void viewMyActivity(){
+
+    private void goToHomepage(){
         Intent intent = new Intent(this, MyWish.class);
         startActivity(intent);
     }

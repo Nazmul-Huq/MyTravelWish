@@ -6,7 +6,6 @@ package com.nazmul.mytravelwish;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
             holder.destinationName = (TextView) row.findViewById(R.id.destinationNameRow);
             holder.note = (TextView) row.findViewById(R.id.noteRow);
             holder.city = (TextView) row.findViewById(R.id.destinationCityRow);
+            holder.country = (TextView) row.findViewById(R.id.destinationCountryRow);
             holder.editButton = (Button) row.findViewById(R.id.editButton);
             holder.deleteButton = (Button) row.findViewById(R.id.deleteButton);
             holder.hiddenText = (TextView) row.findViewById(R.id.hiddenText);
@@ -62,6 +62,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.destinationName.setText(wish.getDestination());
         holder.note.setText(wish.getNote());
         holder.city.setText(wish.getCity());
+        holder.country.setText(wish.getCountry());
         holder.hiddenText.setText(wish.getId());
         holder.imageView.setImageResource(R.drawable.default_wish_image);
         holder.defaultMapIcon.setImageResource(R.drawable.default_map_image);
@@ -70,10 +71,17 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // get the id of the wish, that was clicked
-                //String wishId = getWishIdWhenClicked(view);
+                String wishId = getInfoOnClick(view, 8); // get the id of the wish, that was clicked
+                Intent intent=new Intent(view.getContext(), AddWish.class); // set intent
+                intent.putExtra("wishId", getInfoOnClick(view, 8)); // set image id into intent
+                intent.putExtra("destinationName", getInfoOnClick(view, 0)); // set image id into intent
+                intent.putExtra("note", getInfoOnClick(view, 1)); // set image id into intent
+                intent.putExtra("city", getInfoOnClick(view, 2)); // set image id into intent
+                intent.putExtra("country", getInfoOnClick(view, 3)); // set image id into intent
+                intent.putExtra("editWish", "true");
 
-                // TODO: edit a wish
+
+                view.getContext().startActivity(intent); // start the page (ImageHandler)
             }
         });
 
@@ -89,7 +97,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String wishId = getWishIdWhenClicked(view); // get the id of the wish, that was clicked
+                String wishId = getInfoOnClick(view, 8); // get the id of the wish, that was clicked
                 Intent intent=new Intent(view.getContext(), ImageHandler.class); // set intent
                 intent.putExtra("wishId", wishId); // set image id into intent
                 view.getContext().startActivity(intent); // start the page (ImageHandler)
@@ -100,7 +108,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         holder.defaultMapIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String wishId = getWishIdWhenClicked(view); // get the id of the wish, that was clicked
+                String wishId = getInfoOnClick(view, 8); // get the id of the wish, that was clicked
                 Intent intent=new Intent(view.getContext(), ShowTheMap.class); // set intent
                 intent.putExtra("wishId", wishId); // set image id into intent
                 view.getContext().startActivity(intent); // start the page (ImageHandler)
@@ -114,6 +122,7 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         TextView destinationName;
         TextView note;
         TextView city;
+        TextView country;
         ImageView imageView;
         ImageView defaultMapIcon;
         Button editButton;
@@ -121,11 +130,11 @@ public class MyWishAdapter extends ArrayAdapter<Wish> {
         TextView hiddenText;
     }
 
-    public String getWishIdWhenClicked(View view){
+    public String getInfoOnClick(View view, int position){
         RelativeLayout relativeLayout = (RelativeLayout) view.getParent();
-        TextView child = (TextView)relativeLayout.getChildAt(8);
-        String wishId = child.getText().toString();
-        return wishId;
+        TextView child = (TextView)relativeLayout.getChildAt(position);
+        String info = child.getText().toString();
+        return info;
     }
 
 }

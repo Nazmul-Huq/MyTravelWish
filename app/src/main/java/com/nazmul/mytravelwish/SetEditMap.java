@@ -58,7 +58,7 @@ public class SetEditMap extends AppCompatActivity implements OnMapReadyCallback,
 
         Intent intent = getIntent();
         wishId = intent.getStringExtra("wishId");
-        editMap = intent.getStringExtra("editMap");
+        editMap = intent.getStringExtra("destinationName");
 
     }
 

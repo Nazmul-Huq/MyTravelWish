@@ -152,4 +152,25 @@ public class FirebaseService {
                 });
     }
 
+    public void editWish(String wishId, String destinationNameStr, String noteStr, String destinationCityStr, String destinationCountryStr) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("destinationName", destinationNameStr);
+        data.put("note", noteStr);
+        data.put("destinationCity", destinationCityStr);
+        data.put("destinationCountry", destinationCountryStr);
+
+        DocumentReference documentRef = db.collection("wishes").document(wishId);
+        documentRef.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle error
+                    }
+                });
+    }
 }
