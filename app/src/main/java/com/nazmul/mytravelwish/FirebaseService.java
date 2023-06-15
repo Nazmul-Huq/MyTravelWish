@@ -176,4 +176,13 @@ public class FirebaseService {
                     }
                 });
     }
+
+    public void addUser(String nameStr, String userNameStr, String passwordStr) {
+        DocumentReference ref = db.collection("users").document();
+        Map<String, Object> wish = new HashMap<>();
+        wish.put("name", nameStr);
+        wish.put("username", userNameStr);
+        wish.put("password", passwordStr); //TODO: password should be hashed
+        ref.set(wish);
+    }
 }
