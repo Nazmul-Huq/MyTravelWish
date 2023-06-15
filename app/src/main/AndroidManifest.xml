@@ -27,6 +27,7 @@
         <activity android:name=".ImageHandler"></activity>
         <activity android:name=".ShowTheMap"></activity>
         <activity android:name=".SetEditMap"></activity>
+        <activity android:name=".SignUp"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true" >

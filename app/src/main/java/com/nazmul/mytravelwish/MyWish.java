@@ -1,6 +1,8 @@
 package com.nazmul.mytravelwish;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,11 +35,18 @@ public class MyWish extends AppCompatActivity {
     ArrayList<Wish> wishArray = new ArrayList<Wish>();
     MyWishAdapter wishAdapter;
     FirebaseService firebaseService;
+    TextView welcomeHeader;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wish_my);
+
+        welcomeHeader = (TextView) findViewById(R.id.welcomeHeader);
+        SharedPreferences sharedPreferences = getSharedPreferences("AppUserData", Context.MODE_PRIVATE);
+        String appUserName = sharedPreferences.getString("appUserName", null);
+        String welcomeStr = appUserName + "'s Wishes";
+        welcomeHeader.setText(welcomeStr);
 
         firebaseService = new FirebaseService();
 
