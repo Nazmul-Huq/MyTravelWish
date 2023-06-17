@@ -1,11 +1,7 @@
 package com.nazmul.mytravelwish;
 
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -43,20 +39,56 @@ public class FirebaseService {
 
     /**
      * Add document to the firestore database
+     *
      * @param destinationNameStr
      * @param noteStr
      * @param destinationCityStr
      * @param destinationCountryStr
+     * @param username
      */
-    public void addWish(String destinationNameStr, String noteStr, String destinationCityStr, String destinationCountryStr){
+    public void addWish(String destinationNameStr, String noteStr, String destinationCityStr, String destinationCountryStr, String username){
         DocumentReference ref = db.collection("wishes").document();
         Map<String, Object> wish = new HashMap<>();
         wish.put("destinationName", destinationNameStr);
         wish.put("note", noteStr);
         wish.put("destinationCity", destinationCityStr);
         wish.put("destinationCountry", destinationCountryStr);
+        wish.put("username", username);
         ref.set(wish);
     }
+
+    /**
+     * edit a wish
+     * @param wishId
+     * @param destinationNameStr
+     * @param noteStr
+     * @param destinationCityStr
+     * @param destinationCountryStr
+     * @param username
+     */
+    public void editWish(String wishId, String destinationNameStr, String noteStr, String destinationCityStr, String destinationCountryStr, String username) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("destinationName", destinationNameStr);
+        data.put("note", noteStr);
+        data.put("destinationCity", destinationCityStr);
+        data.put("destinationCountry", destinationCountryStr);
+        data.put("username", username);
+
+        DocumentReference documentRef = db.collection("wishes").document(wishId);
+        documentRef.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle error
+                    }
+                });
+    }
+
 
     /**
      * this method is moved to MyWish.java
@@ -155,27 +187,6 @@ public class FirebaseService {
                 });
     }
 
-    public void editWish(String wishId, String destinationNameStr, String noteStr, String destinationCityStr, String destinationCountryStr) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("destinationName", destinationNameStr);
-        data.put("note", noteStr);
-        data.put("destinationCity", destinationCityStr);
-        data.put("destinationCountry", destinationCountryStr);
-
-        DocumentReference documentRef = db.collection("wishes").document(wishId);
-        documentRef.update(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle error
-                    }
-                });
-    }
 
     public void addUser(String nameStr, String userNameStr, String passwordStr) {
         DocumentReference ref = db.collection("users").document();

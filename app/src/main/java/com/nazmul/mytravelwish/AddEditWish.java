@@ -1,6 +1,8 @@
 package com.nazmul.mytravelwish;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class AddEditWish extends AppCompatActivity {
 
-    private String isEditWish, wishIdString, destinationNameString, cityString, noteString, countryString;
+    private String isEditWish, wishIdString, destinationNameString, cityString, noteString, countryString, appUserName, username;
     EditText destinationName, note, destinationCity, destinationCountry;
     Button addWishFinalBtn;
     FirebaseService firebaseService;
@@ -29,6 +31,10 @@ public class AddEditWish extends AppCompatActivity {
         destinationCity = (EditText) findViewById(R.id.destinationCity);
         destinationCountry = (EditText) findViewById(R.id.destinationCountry);
         addWishFinalBtn = (Button) findViewById(R.id.addWishFinalBtn);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("AppUserData", Context.MODE_PRIVATE);
+        appUserName = sharedPreferences.getString("appUserName", null);
+        username = sharedPreferences.getString("username", null);
 
         Intent intent = getIntent();
         isEditWish = intent.getStringExtra("editWish");
@@ -62,10 +68,10 @@ public class AddEditWish extends AppCompatActivity {
 
                 if (isEditWish.equals("true")) {
                     // edit an existing wish
-                    firebaseService.editWish(wishIdString, destinationNameStr, noteStr, destinationCityStr, destinationCountryStr);
+                    firebaseService.editWish(wishIdString, destinationNameStr, noteStr, destinationCityStr, destinationCountryStr, username);
                 } else {
                     // add a new wish
-                    firebaseService.addWish(destinationNameStr, noteStr, destinationCityStr, destinationCountryStr);
+                    firebaseService.addWish(destinationNameStr, noteStr, destinationCityStr, destinationCountryStr, username);
                 }
 
                 goToHomepage();

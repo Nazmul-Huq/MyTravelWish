@@ -30,12 +30,13 @@ import java.util.ArrayList;
  * This page show all the wishes of a specific user
  */
 public class MyWish extends AppCompatActivity {
-    Button addWishBtn;
-    ListView wishList;
-    ArrayList<Wish> wishArray = new ArrayList<Wish>();
-    MyWishAdapter wishAdapter;
-    FirebaseService firebaseService;
-    TextView welcomeHeader;
+    private String username, appUserName;
+    private Button addWishBtn;
+    private ListView wishList;
+    private ArrayList<Wish> wishArray = new ArrayList<Wish>();
+    private MyWishAdapter wishAdapter;
+    private FirebaseService firebaseService;
+    private TextView welcomeHeader;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +45,8 @@ public class MyWish extends AppCompatActivity {
 
         welcomeHeader = (TextView) findViewById(R.id.welcomeHeader);
         SharedPreferences sharedPreferences = getSharedPreferences("AppUserData", Context.MODE_PRIVATE);
-        String appUserName = sharedPreferences.getString("appUserName", null);
+        appUserName = sharedPreferences.getString("appUserName", null);
+        username = sharedPreferences.getString("username", null);
         String welcomeStr = appUserName + "'s Wishes";
         welcomeHeader.setText(welcomeStr);
 
@@ -69,6 +71,7 @@ public class MyWish extends AppCompatActivity {
 
     public void goToAddWishPage(){
         Intent intent = new Intent(this, AddEditWish.class);
+        intent.putExtra("editWish", "false");
         startActivity(intent);
     }
 
@@ -77,6 +80,7 @@ public class MyWish extends AppCompatActivity {
      */
     public void getAllWishes(){
         firebaseService.db.collection("wishes")
+                .whereEqualTo("username", username)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
