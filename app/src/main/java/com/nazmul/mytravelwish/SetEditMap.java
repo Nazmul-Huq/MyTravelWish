@@ -93,13 +93,13 @@ public class SetEditMap extends AppCompatActivity implements OnMapReadyCallback,
         saveLocationButton.setOnClickListener(new View.OnClickListener() { // on save button click
             @Override
             public void onClick(View v) {
-                if (editMap.equals("true")) { // is editing? call below
-                    firebaseService.updateLocationToFirestor(latitude, longitude, wishId);
-                    goToHomePage();
-                } else { // if first time setup call below
+                //if (editMap.equals("true")) { // is editing? call below
+                    //firebaseService.updateLocationToFirestor(latitude, longitude, wishId);
+                    //goToHomePage();
+                //} else { // if first time setup call below
                     firebaseService.saveLocationToFirestor(latitude, longitude, wishId);
                     goToHomePage();
-                }
+                //}
 
             }
         });
