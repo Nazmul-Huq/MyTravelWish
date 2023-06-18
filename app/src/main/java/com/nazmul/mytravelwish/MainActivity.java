@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 Query query = usersCollection.whereEqualTo("username", usernameStr)
                         .whereEqualTo("password", passwordStr)
                         .limit(1);
-
                 query.get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {

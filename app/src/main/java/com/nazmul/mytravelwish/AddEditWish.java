@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +19,10 @@ public class AddEditWish extends AppCompatActivity {
 
     private String isEditWish, wishIdString, destinationNameString, cityString, noteString, countryString, appUserName, username;
     EditText destinationName, note, destinationCity, destinationCountry;
-    Button addWishFinalBtn;
+    Button addWishFinalBtn, cancelBtn;
     FirebaseService firebaseService;
+    private TextView welcomeHeader;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,10 +34,16 @@ public class AddEditWish extends AppCompatActivity {
         destinationCity = (EditText) findViewById(R.id.destinationCity);
         destinationCountry = (EditText) findViewById(R.id.destinationCountry);
         addWishFinalBtn = (Button) findViewById(R.id.addWishFinalBtn);
+        cancelBtn = (Button) findViewById(R.id.cancel_button);
+
 
         SharedPreferences sharedPreferences = getSharedPreferences("AppUserData", Context.MODE_PRIVATE);
         appUserName = sharedPreferences.getString("appUserName", null);
         username = sharedPreferences.getString("username", null);
+
+        welcomeHeader = (TextView) findViewById(R.id.welcomeHeader);
+        String welcomeStr = appUserName + "'s Travel Wish";
+        welcomeHeader.setText(welcomeStr);
 
         Intent intent = getIntent();
         isEditWish = intent.getStringExtra("editWish");
@@ -74,6 +83,13 @@ public class AddEditWish extends AppCompatActivity {
                     firebaseService.addWish(destinationNameStr, noteStr, destinationCityStr, destinationCountryStr, username);
                 }
 
+                goToHomepage();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 goToHomepage();
             }
         });

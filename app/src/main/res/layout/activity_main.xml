@@ -10,6 +10,7 @@
     Setting Background Image
     Image was downloaded from
     https://bestwallpapers.net/photo/90-travel-phone-hd-wallpapers-free-download-bestwallpapers-29
+    https://www.freepik.com/free-vector/worldwide-connection-gray-background-illustration_3525477.htm#query=white%20world%20map&position=7&from_view=keyword&track=ais
     -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,14 +20,6 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <!--Header-->
-
-        <!--app:layout_constraintBottom_toBottomOf="parent"
-                   app:layout_constraintEnd_toEndOf="parent"
-                   app:layout_constraintStart_toStartOf="parent"
-                   app:layout_constraintTop_toTopOf="parent"-->
-
-        <!-- Login Fields and Button -->
 
         <TextView
             android:layout_width="match_parent"
@@ -51,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="208dp"
+            android:text="nazmul"
             android:hint="Username" />
 
         <com.google.android.material.textfield.TextInputEditText
@@ -59,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="143dp"
+            android:text="123"
             android:hint="Password" />
 
         <Button

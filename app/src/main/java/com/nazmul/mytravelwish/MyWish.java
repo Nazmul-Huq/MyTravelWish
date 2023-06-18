@@ -31,7 +31,7 @@ import java.util.ArrayList;
  */
 public class MyWish extends AppCompatActivity {
     private String username, appUserName;
-    private Button addWishBtn;
+    private Button addWishBtn, logoutBtn;
     private ListView wishList;
     private ArrayList<Wish> wishArray = new ArrayList<Wish>();
     private MyWishAdapter wishAdapter;
@@ -47,12 +47,13 @@ public class MyWish extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("AppUserData", Context.MODE_PRIVATE);
         appUserName = sharedPreferences.getString("appUserName", null);
         username = sharedPreferences.getString("username", null);
-        String welcomeStr = appUserName + "'s Wishes";
+        String welcomeStr = appUserName + "'s Travel Wish";
         welcomeHeader.setText(welcomeStr);
 
         firebaseService = new FirebaseService();
 
         addWishBtn = (Button) findViewById(R.id.addWishBtn);
+        logoutBtn = (Button) findViewById(R.id.logoutButton);
 
         getAllWishes();
 
